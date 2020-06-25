@@ -1,86 +1,55 @@
 package com.rest.jwebapp.controller;
 
-import com.rest.jwebapp.exception.NotFoundException;
+import com.rest.jwebapp.model.Message;
+import com.rest.jwebapp.repo.MessageRepo;
+import lombok.extern.java.Log;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+@Log
 @RestController
 @RequestMapping("collection")
 public class MainRestController {
-    private int counter = 4;
 
-    public List<Map<String, String>> collection_data = new ArrayList<Map<String, String>>() {
-        {
-            add(new HashMap<String, String>() {
-                {
-                    put("id", "1");
-                }
-                {
-                    put("text", "First message");
-                }
-            });
-            add(new HashMap<String, String>() {
-                {
-                    put("id", "2");
-                }
-                {
-                    put("text", "Second message");
-                }
-            });
-            add(new HashMap<String, String>() {
-                {
-                    put("id", "3");
-                }
-                {
-                    put("text", "Third message");
-                }
-            });
-        }
-    };
+    private final MessageRepo messageRepo;
+
+    @Autowired
+    public MainRestController(MessageRepo messageRepo) {
+        this.messageRepo = messageRepo;
+    }
 
     @GetMapping
-    public List<Map<String, String>> list() {
-        return this.collection_data;
+    public List<Message> list() {
+        return messageRepo.findAll();
     }
 
     @GetMapping("{id}")
-    public Map<String, String> get(
-            @PathVariable String id
-    ) {
-        return this.getMessage(id);
+    public Message get(
+            @PathVariable("id") Message messageFromDb) {
+        return messageFromDb;
     }
 
     @PostMapping
-    public Map<String, String> create(
-            @RequestBody Map<String,
-                    String> message) {
-        message.put("id", String.valueOf(counter++));
-        this.collection_data.add(message);
-        return message;
+    public Message create(
+            @RequestBody Message messageFromFrontEnd) {
+        log.info("method - create - messageFromFrontEnd --> " + messageFromFrontEnd);
+        return messageRepo.save(messageFromFrontEnd);
     }
 
     @PutMapping("{id}")
-    public Map<String, String> update(
-            @PathVariable String id,
-            @RequestBody Map<String, String> message) {
-        Map<String, String> collection_data_fromDB = getMessage(id);
-        collection_data_fromDB.putAll(message);
-        collection_data_fromDB.put("id", id);
-        return collection_data_fromDB;
+    public Message update(
+            @PathVariable("id") Message messageFromDb,
+            @RequestBody Message messageFromFrontEnd) {
+        log.info("method - update - messageFromFrontEnd --> " + messageFromFrontEnd);
+        BeanUtils.copyProperties(messageFromFrontEnd, messageFromDb, "id");
+        return messageRepo.save(messageFromDb);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable String id) {
-        Map<String, String> message = getMessage(id);
-        this.collection_data.remove(message);
-    }
-
-    private Map<String, String> getMessage(@PathVariable String id) {
-        return this.collection_data
-                .stream()
-                .filter(message -> message.get("id").equals(id))
-                .findFirst()
-                .orElseThrow(NotFoundException::new);
+    public void delete(@PathVariable("id") Message messageFromDb) {
+        messageRepo.delete(messageFromDb);
     }
 }
