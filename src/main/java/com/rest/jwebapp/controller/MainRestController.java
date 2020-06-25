@@ -1,33 +1,31 @@
 package com.rest.jwebapp.controller;
 
 import com.rest.jwebapp.domain.Message;
-import com.rest.jwebapp.repo.MessageRepo;
+import com.rest.jwebapp.repo.MessageRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Log
 @RestController
 @RequestMapping("collection")
 public class MainRestController {
 
-    private final MessageRepo messageRepo;
+    private final MessageRepository messageRepository;
 
     @Autowired
-    public MainRestController(MessageRepo messageRepo) {
-        this.messageRepo = messageRepo;
+    public MainRestController(MessageRepository messageRepository) {
+        this.messageRepository = messageRepository;
     }
 
     @GetMapping
     public List<Message> list() {
-        return messageRepo.findAll();
+        return messageRepository.findAll();
     }
 
     @GetMapping("{id}")
@@ -39,7 +37,7 @@ public class MainRestController {
     @PostMapping
     public Message create(
             @RequestBody Message messageFromFrontEnd) {
-        return messageRepo.save(messageFromFrontEnd);
+        return messageRepository.save(messageFromFrontEnd);
     }
 
     @PutMapping("{id}")
@@ -47,11 +45,11 @@ public class MainRestController {
             @PathVariable("id") Message messageFromDb,
             @RequestBody Message messageFromFrontEnd) {
         BeanUtils.copyProperties(messageFromFrontEnd, messageFromDb, "id");
-        return messageRepo.save(messageFromDb);
+        return messageRepository.save(messageFromDb);
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message messageFromFrontEnd) {
-        messageRepo.delete(messageFromFrontEnd);
+        messageRepository.delete(messageFromFrontEnd);
     }
 }
