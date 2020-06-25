@@ -1,13 +1,17 @@
 package com.rest.jwebapp.controller;
 
-import com.rest.jwebapp.model.Message;
+import com.rest.jwebapp.domain.Message;
 import com.rest.jwebapp.repo.MessageRepo;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Log
 @RestController
@@ -35,7 +39,6 @@ public class MainRestController {
     @PostMapping
     public Message create(
             @RequestBody Message messageFromFrontEnd) {
-        log.info("method - create - messageFromFrontEnd --> " + messageFromFrontEnd);
         return messageRepo.save(messageFromFrontEnd);
     }
 
@@ -43,13 +46,12 @@ public class MainRestController {
     public Message update(
             @PathVariable("id") Message messageFromDb,
             @RequestBody Message messageFromFrontEnd) {
-        log.info("method - update - messageFromFrontEnd --> " + messageFromFrontEnd);
         BeanUtils.copyProperties(messageFromFrontEnd, messageFromDb, "id");
         return messageRepo.save(messageFromDb);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Message messageFromDb) {
-        messageRepo.delete(messageFromDb);
+    public void delete(@PathVariable("id") Message messageFromFrontEnd) {
+        messageRepo.delete(messageFromFrontEnd);
     }
 }

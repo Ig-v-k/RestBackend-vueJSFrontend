@@ -1,19 +1,29 @@
-package com.rest.jwebapp.model;
+package com.rest.jwebapp.domain;
 
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
 @ToString(of = {"id", "text"})
 @EqualsAndHashCode(of = {"id"})
-public class Message {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Message implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String text;
+
+    public Message(String idString) {
+        this.id = Long.parseLong(idString);
+    }
 
     public Long getId() {
         return id;
