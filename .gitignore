@@ -33,3 +33,6 @@ build/
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
+
+### Webpack ###
+node_modules

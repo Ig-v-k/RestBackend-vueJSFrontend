@@ -3,6 +3,7 @@ package com.rest.jwebapp.controller;
 import com.rest.jwebapp.domain.User;
 import com.rest.jwebapp.repo.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,9 @@ import java.util.HashMap;
 @RequestMapping("/")
 public class MainController {
     private final MessageRepository messageRepository;
+
+    @Value("${spring.profile.active}")
+    private String profileIsActive;
 
     @Autowired
     public MainController(MessageRepository messageRepository) {
@@ -29,6 +33,7 @@ public class MainController {
         data.put("profile", user);
         data.put("messages", messageRepository.findAll());
         model.addAttribute("frontendData", data);
+        model.addAttribute("isDevelopmentMode", "dev".equals(profileIsActive));
         return "index";
     }
 }
