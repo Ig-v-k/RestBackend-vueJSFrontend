@@ -8,7 +8,6 @@ function getIndex(list, id) {
     return -1;
 }
 
-
 var messageApi = Vue.resource('/collection{/id}');
 
 Vue.component('message-form', {
@@ -27,8 +26,8 @@ Vue.component('message-form', {
     },
     template:
         '<div>' +
-        '<input type="text" placeholder="Write something" v-model="text" />' +
-        '<input type="button" value="Save" @click="save" />' +
+            '<input type="text" placeholder="Write something" v-model="text" />' +
+            '<input type="button" value="Save" @click="save" />' +
         '</div>',
     methods: {
         save: function() {
@@ -91,13 +90,6 @@ Vue.component('messages-list', {
         '<message-row v-for="message in messages" :key="message.id" :message="message" ' +
         ':editMethod="editMethod" :messages="messages" />' +
         '</div>',
-    created: function() {
-        messageApi.get().then(result =>
-            result.json().then(data =>
-                data.forEach(message => this.messages.push(message))
-            )
-        )
-    },
     methods: {
         editMethod: function(message) {
             this.message = message;
@@ -107,8 +99,27 @@ Vue.component('messages-list', {
 
 var app = new Vue({
     el: '#app',
-    template: '<messages-list :messages="messages" />',
+    template:
+        '<div>' +
+            '<div v-if="!profile">' +
+                'Необходимо авторизоваться через <a href="/login">Google</a>' +
+            '</div>' +
+            '<div v-else>' +
+                '<div>' +
+                    '{{profile.name}}&nbsp;<a href="/logout">Выйти</a>' +
+                '</div>' +
+                '<messages-list :messages="messages" />' +
+            '</div>' +
+        '</div>',
     data: {
-        messages: []
-    }
+        messages: frontendData.messages,
+        profile: frontendData.profile,
+    },
+    created: function() {
+        // messageApi.get().then(result =>
+        //     result.json().then(data =>
+        //         data.forEach(message => this.messages.push(message))
+        //     )
+        // )
+    },
 });
