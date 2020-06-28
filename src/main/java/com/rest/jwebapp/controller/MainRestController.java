@@ -5,6 +5,8 @@ import com.rest.jwebapp.repo.MessageRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,5 +51,11 @@ public class MainRestController {
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message messageFromFrontEnd) {
         messageRepository.delete(messageFromFrontEnd);
+    }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message message(Message message) {
+        return messageRepository.save(message);
     }
 }
