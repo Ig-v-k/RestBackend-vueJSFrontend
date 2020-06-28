@@ -1,6 +1,5 @@
 package com.rest.jwebapp.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "message")
 @ToString(of = {"id", "text"})
 @EqualsAndHashCode(of = {"id"})
 @AllArgsConstructor
