@@ -53,9 +53,9 @@ public class MainRestController {
         messageRepository.delete(messageFromFrontEnd);
     }
 
-    @MessageMapping("/changeMessage")
-    @SendTo("/topic/activity")
-    public Message message(Message message) {
-        return messageRepository.save(message);
-    }
+//    @MessageMapping("/changeMessage")
+//    @SendTo("/topic/activity")
+//    public Message message(Message message) {
+//        return messageRepository.save(message);
+//    }
 }
