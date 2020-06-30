@@ -149,11 +149,16 @@
                             <goal>yarn</goal>
                         </goals>
                         <configuration>
-                            <!-- optional: The default argument is actually
-                            "install", so unless you need to run some other yarn command,
-                            you can remove this whole <configuration> section.
-                            -->
                             <arguments>build</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>yarn start</id>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>start</arguments>
                         </configuration>
                     </execution>
                 </executions>
