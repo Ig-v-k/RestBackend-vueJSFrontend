@@ -144,13 +144,15 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>webpack build</id>
+                        <id>yarn install</id>
                         <goals>
-                            <goal>webpack</goal>
+                            <goal>yarn</goal>
                         </goals>
-                        <phase>generate-resources</phase>
-
                         <configuration>
+                            <!-- optional: The default argument is actually
+                            "install", so unless you need to run some other yarn command,
+                            you can remove this whole <configuration> section.
+                            -->
                             <arguments>build</arguments>
                         </configuration>
                     </execution>
