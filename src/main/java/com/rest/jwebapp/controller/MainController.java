@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class MainController {
     private final MessageRepository messageRepository;
 
-    @Value("${spring.profile.active}")
+    @Value("${spring.profile.active:prod}")
     private String profileIsActive;
 
     @Autowired

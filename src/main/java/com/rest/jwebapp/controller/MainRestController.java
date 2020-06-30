@@ -1,26 +1,31 @@
 package com.rest.jwebapp.controller;
 
 import com.rest.jwebapp.domain.Message;
+import com.rest.jwebapp.domain.Views;
+import com.rest.jwebapp.dto.EventType;
+import com.rest.jwebapp.dto.ObjectType;
 import com.rest.jwebapp.repo.MessageRepository;
+import com.rest.jwebapp.util.WsSender;
 import lombok.extern.java.Log;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @Log
 @RestController
-@RequestMapping("collection")
+@RequestMapping("collections")
 public class MainRestController {
 
     private final MessageRepository messageRepository;
+    private final BiConsumer<EventType, Message> wsSender; // response: {id}, {text}
 
     @Autowired
-    public MainRestController(MessageRepository messageRepository) {
+    public MainRestController(MessageRepository messageRepository, WsSender wsSender) {
         this.messageRepository = messageRepository;
+        this.wsSender = wsSender.getWebSocketSenderMethod(ObjectType.MESSAGE, Views.IdName.class);
     }
 
     @GetMapping
@@ -37,7 +42,9 @@ public class MainRestController {
     @PostMapping
     public Message create(
             @RequestBody Message messageFromFrontEnd) {
-        return messageRepository.save(messageFromFrontEnd);
+        Message saveMessage = messageRepository.save(messageFromFrontEnd);
+        wsSender.accept(EventType.CREATE, saveMessage);
+        return saveMessage;
     }
 
     @PutMapping("{id}")
@@ -45,17 +52,14 @@ public class MainRestController {
             @PathVariable("id") Message messageFromDb,
             @RequestBody Message messageFromFrontEnd) {
         BeanUtils.copyProperties(messageFromFrontEnd, messageFromDb, "id");
-        return messageRepository.save(messageFromDb);
+        Message updateMessage = messageRepository.save(messageFromFrontEnd);
+        wsSender.accept(EventType.UPDATE, updateMessage);
+        return updateMessage;
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable("id") Message messageFromFrontEnd) {
         messageRepository.delete(messageFromFrontEnd);
+        wsSender.accept(EventType.DELETE, messageFromFrontEnd);
     }
-
-//    @MessageMapping("/changeMessage")
-//    @SendTo("/topic/activity")
-//    public Message message(Message message) {
-//        return messageRepository.save(message);
-//    }
 }

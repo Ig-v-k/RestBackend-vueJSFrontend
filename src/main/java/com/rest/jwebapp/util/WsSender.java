@@ -3,11 +3,13 @@ package com.rest.jwebapp.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.rest.jwebapp.dto.EventType;
 import com.rest.jwebapp.dto.ObjectType;
+import com.rest.jwebapp.dto.WsEventDto;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 @Component
 public class WsSender {
@@ -19,8 +21,8 @@ public class WsSender {
         this.objectMapper = objectMapper;
     }
 
-    public <T> Consumer<T> getWebSocketSenderMethod(ObjectType objectType, Class view) {
-        return (T payload) -> {
+    public <T> BiConsumer<EventType, T> getWebSocketSenderMethod(ObjectType objectType, Class view) {
+        return (EventType eventType, T payload) -> {
             String value = null;
             try {
                 value = objectMapper.writeValueAsString(payload);
@@ -30,7 +32,7 @@ public class WsSender {
             }
             simpMessagingTemplate.convertAndSend(
                     "/topic/activity",
-                    value
+                    new WsEventDto(objectType, eventType, value)
             );
         };
     }
