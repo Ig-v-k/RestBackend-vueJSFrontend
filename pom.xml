@@ -144,7 +144,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>yarn install</id>
+                        <id>yarn build</id>
                         <goals>
                             <goal>yarn</goal>
                         </goals>
