@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class MainController {
     private final MessageRepository messageRepository;
 
-    @Value("${spring.profile.active:prod}")
+    @Value("${spring.custom.profile}")
     private String profileIsActive;
 
     @Autowired
@@ -35,7 +35,8 @@ public class MainController {
             data.put("messages", messageRepository.findAll());
         }
         model.addAttribute("frontendData", data);
-        model.addAttribute("isDevelopmentMode", "dev".equals(profileIsActive));
+        model.addAttribute("isDevelopmentMode", "prod".equals(profileIsActive));
+
         return "index";
     }
 }
