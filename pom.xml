@@ -143,7 +143,6 @@
                         </goals>
                         <phase>generate-resources</phase>
                     </execution>
-
                     <execution>
                         <id>npm install</id>
                         <goals>
@@ -153,8 +152,15 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-
-
+                    <execution>
+                        <id>npm start</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>start</arguments>
+                        </configuration>
+                    </execution>
 <!--                    <execution>-->
 <!--                        <id>yarn install</id>-->
 <!--                        <goals>-->
@@ -173,22 +179,12 @@
 <!--                            <arguments>build</arguments>-->
 <!--                        </configuration>-->
 <!--                    </execution>-->
-                    <execution>
-                        <id>npm start</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>start</arguments>
-                        </configuration>
-                    </execution>
+
                 </executions>
                 <configuration>
                     <nodeVersion>v6.9.1</nodeVersion>
 <!--                    <yarnVersion>v0.16.1</yarnVersion>-->
-                    <nodeDownloadRoot>http://myproxy.example.org/nodejs/</nodeDownloadRoot>
                     <serverId>server001</serverId>
-                    <npmDownloadRoot>https://myproxy.example.org/npm/</npmDownloadRoot>
                 </configuration>
             </plugin>
         </plugins>
