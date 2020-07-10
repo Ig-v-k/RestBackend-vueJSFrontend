@@ -164,10 +164,13 @@
                     <execution>
                         <id>npm start</id>
                         <goals>
-                            <goal>npm</goal>
+                            <goal>exec</goal>
                         </goals>
                         <configuration>
-                            <arguments>start</arguments>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>start</argument>
+                            </arguments>
                         </configuration>
                     </execution>
 <!--                    <execution>-->
