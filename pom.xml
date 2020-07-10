@@ -153,6 +153,18 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>npm run dev</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>dev</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>npm start</id>
                         <goals>
                             <goal>npm</goal>
@@ -182,7 +194,7 @@
 
                 </executions>
                 <configuration>
-                    <nodeVersion>v6.9.1</nodeVersion>
+                    <nodeVersion>v10.21.0</nodeVersion>
 <!--                    <yarnVersion>v0.16.1</yarnVersion>-->
                     <serverId>server001</serverId>
                 </configuration>
