@@ -133,9 +133,8 @@
 <!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
 <!--                        <phase>generate-resources</phase>-->
 <!--                    </execution>-->
-
                     <execution>
-                        <id>install node and npm</id>
+                        <id>npm install (initialize)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
