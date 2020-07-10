@@ -114,38 +114,36 @@
 
     <build>
         <plugins>
-            <plugin>
+<!--            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.3.2</version>
                 <executions>
-
-<!--                    <execution>-->
-<!--                        &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;-->
-<!--                        <id>install node and yarn</id>-->
-<!--                        <goals>-->
-<!--                            <goal>install-node-and-yarn</goal>-->
-<!--                        </goals>-->
-<!--                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;-->
-<!--                        <phase>generate-resources</phase>-->
-<!--                    </execution>-->
                     <execution>
-                        <id>npm install (initialize)</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <phase>initialize</phase>
+                        <id>exec-npm-install</id>
+                        <phase>generate-sources</phase>
                         <configuration>
                             <executable>npm</executable>
                             <arguments>
                                 <argument>install</argument>
                             </arguments>
                         </configuration>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
                     </execution>
+&lt;!&ndash;                    <execution>&ndash;&gt;
+&lt;!&ndash;                        &lt;!&ndash; optional: you don't really need execution ids, but it looks nice in your build log. &ndash;&gt;&ndash;&gt;
+&lt;!&ndash;                        <id>install node and yarn</id>&ndash;&gt;
+&lt;!&ndash;                        <goals>&ndash;&gt;
+&lt;!&ndash;                            <goal>install-node-and-yarn</goal>&ndash;&gt;
+&lt;!&ndash;                        </goals>&ndash;&gt;
+&lt;!&ndash;                        &lt;!&ndash; optional: default phase is "generate-resources" &ndash;&gt;&ndash;&gt;
+&lt;!&ndash;                        <phase>generate-resources</phase>&ndash;&gt;
+&lt;!&ndash;                    </execution>&ndash;&gt;
                     <execution>
                         <id>npm run build</id>
                         <goals>
@@ -172,31 +170,72 @@
                             </arguments>
                         </configuration>
                     </execution>
-<!--                    <execution>-->
-<!--                        <id>yarn install</id>-->
-<!--                        <goals>-->
-<!--                            <goal>yarn</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <arguments>install &#45;&#45;ignore-engines</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                    <execution>-->
-<!--                        <id>yarn build</id>-->
-<!--                        <goals>-->
-<!--                            <goal>yarn</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <arguments>build</arguments>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
+&lt;!&ndash;                    <execution>&ndash;&gt;
+&lt;!&ndash;                        <id>yarn install</id>&ndash;&gt;
+&lt;!&ndash;                        <goals>&ndash;&gt;
+&lt;!&ndash;                            <goal>yarn</goal>&ndash;&gt;
+&lt;!&ndash;                        </goals>&ndash;&gt;
+&lt;!&ndash;                        <configuration>&ndash;&gt;
+&lt;!&ndash;                            <arguments>install &#45;&#45;ignore-engines</arguments>&ndash;&gt;
+&lt;!&ndash;                        </configuration>&ndash;&gt;
+&lt;!&ndash;                    </execution>&ndash;&gt;
+&lt;!&ndash;                    <execution>&ndash;&gt;
+&lt;!&ndash;                        <id>yarn build</id>&ndash;&gt;
+&lt;!&ndash;                        <goals>&ndash;&gt;
+&lt;!&ndash;                            <goal>yarn</goal>&ndash;&gt;
+&lt;!&ndash;                        </goals>&ndash;&gt;
+&lt;!&ndash;                        <configuration>&ndash;&gt;
+&lt;!&ndash;                            <arguments>build</arguments>&ndash;&gt;
+&lt;!&ndash;                        </configuration>&ndash;&gt;
+&lt;!&ndash;                    </execution>&ndash;&gt;
 
                 </executions>
                 <configuration>
                     <nodeVersion>v10.21.0</nodeVersion>
-<!--                    <yarnVersion>v0.16.1</yarnVersion>-->
+&lt;!&ndash;                    <yarnVersion>v0.16.1</yarnVersion>&ndash;&gt;
                     <serverId>server001</serverId>
                 </configuration>
+            </plugin>-->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.9.1</version>
+
+                <configuration>
+                    <nodeVersion>v12.16.0</nodeVersion>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>Install Node.js and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+<!--                            <workingDirectory>${your.npm.script.directory}</workingDirectory>-->
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>npm start</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <!--                            <workingDirectory>${your.npm.script.directory}</workingDirectory>-->
+                            <arguments>start</arguments>
+                        </configuration>
+                    </execution>
+
+                </executions>
             </plugin>
         </plugins>
     </build>
